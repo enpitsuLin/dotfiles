@@ -28,7 +28,8 @@ git config --global user.name "enpitsulin"
 git config --global user.email "enpitsulin@gmail.com"
 
 # get dotfiles
-git clone git@github.com:enpitsuLin/dotfiles.git ~/dotfiles
+$Profile_Loctaion = Convert-Path ~
+git clone git@github.com:enpitsuLin/dotfiles.git "$($Profile_Loctaion)/dotfiles"
 
 # create symbolic link for pwsh profile
-sudo New-Item -Path $profile -Value ~/dotfiles/ps_profile.ps1 -ItemType SymbolicLink -Force
+sudo New-Item -Path $profile -Value "$($Profile_Loctaion)/dotfiles/ps_profile.ps1" -ItemType SymbolicLink -Force

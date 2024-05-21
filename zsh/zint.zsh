@@ -50,7 +50,3 @@ zinit pack for ls_colors
 
 zinit ice lucid wait='1'
 zinit snippet OMZ::plugins/git/git.plugin.zsh
-
-# Powerlevel10k theme
-zinit ice depth=1; 
-zinit light romkatv/powerlevel10k

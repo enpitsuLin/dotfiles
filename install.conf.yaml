@@ -1,5 +1,6 @@
 - defaults:
     link:
+      create: true
       relink: true
 
 - clean: ['~']
@@ -10,5 +11,5 @@
       path: ''
     ~/.zshrc: 
       path: .zshrc
-    ~/.p10k.zsh: 
-      path: .p10k.zsh
+    ~/.starship:
+      path: .starship

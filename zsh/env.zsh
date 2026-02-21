@@ -21,9 +21,6 @@ export NWJS_URLBASE="https://cdn.npmmirror.com/binaries/nwjs/v"
 export PUPPETEER_DOWNLOAD_HOST="https://cdn.npmmirror.com/binaries"
 export SENTRYCLI_CDNURL="https://cdn.npmmirror.com/binaries/sentry-cli"
 export SAUCECTL_INSTALL_BINARY_MIRROR="https://cdn.npmmirror.com/binaries/saucectl"
-export npm_config_sharp_binary_host="https://cdn.npmmirror.com/binaries/sharp"
-export npm_config_sharp_libvips_binary_host="https://cdn.npmmirror.com/binaries/sharp-libvips"
-export npm_config_robotjs_binary_host="https://cdn.npmmirror.com/binaries/robotj"
 # For Cypress >=10.6.0, https://docs.cypress.io/guides/references/changelog#10-6-0
 export CYPRESS_DOWNLOAD_PATH_TEMPLATE='https://cdn.npmmirror.com/binaries/cypress/${version}/${platform}-${arch}/cypress.zip'
 

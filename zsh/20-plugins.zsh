@@ -1,3 +1,4 @@
+# Plugin manager and shell UX plugins
 typeset -A ZINIT=(
     BIN_DIR  $HOME/.config/zsh/zinit/bin
     HOME_DIR $HOME/.config/zsh/zinit

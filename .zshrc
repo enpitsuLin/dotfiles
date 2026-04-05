@@ -33,6 +33,18 @@ if [ -d "$ANDROID_HOME" ]; then
   export PATH=$PATH:$ANDROID_HOME/emulator
 fi
 
+# pnpm global binaries
+case "$(uname)" in
+  Darwin) export PNPM_HOME="$HOME/Library/pnpm" ;;
+  *) export PNPM_HOME="$HOME/.local/share/pnpm" ;;
+esac
+if [ -d "$PNPM_HOME" ]; then
+  case ":$PATH:" in
+    *":$PNPM_HOME:"*) ;;
+    *) export PATH="$PNPM_HOME:$PATH" ;;
+  esac
+fi
+
 # Cursor (WSL)
 [ -d "/mnt/c/Users/enpitsulin/AppData/Local/Programs/cursor/resources/app/bin" ] && \
   export PATH="/mnt/c/Users/enpitsulin/AppData/Local/Programs/cursor/resources/app/bin:$PATH"

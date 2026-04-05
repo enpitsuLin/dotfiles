@@ -13,3 +13,8 @@
       path: .zshrc
     ~/.starship:
       path: .starship
+    ~/.config/mise:
+      path: mise
+
+- shell:
+  - [command -v mise >/dev/null 2>&1 && mise install, Install configured mise toolchains]

@@ -1,0 +1,19 @@
+[settings]
+auto_install = true
+experimental = false
+idiomatic_version_file_enable_tools = ["node", "python", "ruby"]
+pin = true
+python.uv_venv_auto = "source"
+
+[settings.node]
+corepack = true
+
+# Global defaults. Project-level mise files can still override these.
+[tools]
+bun = "latest"
+go = "1.25.7"
+node = "latest"
+pnpm = "latest"
+python = "latest"
+rust = "stable"
+uv = "latest"

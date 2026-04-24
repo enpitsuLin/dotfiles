@@ -13,6 +13,7 @@
       path: .zshrc
     ~/.starship:
       path: .starship
+      force: true
     ~/.config/mise:
       path: mise
 

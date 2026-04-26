@@ -6,13 +6,12 @@ pin = true
 python.uv_venv_auto = "source"
 
 [settings.node]
-corepack = true
 
 # Global defaults. Project-level mise files can still override these.
 [tools]
 bun = "latest"
 go = "1.25.7"
 node = "latest"
-pnpm = "latest"
+"npm:corepack" = "0.34.6"
 python = "latest"
 uv = "latest"

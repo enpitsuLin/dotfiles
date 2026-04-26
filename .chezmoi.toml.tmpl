@@ -1,5 +1,5 @@
-{{- $email := promptStringOnce . "email" "Git email address" "" -}}
-{{- $name := promptStringOnce . "name" "Git user name" "" -}}
+{{- $email := env "EMAIL" | default "" -}}
+{{- $name := env "NAME" | default "" -}}
 
 [git]
     autoCommit = false

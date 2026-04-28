@@ -1,0 +1,10 @@
+{{- $email := env "EMAIL" | default "" -}}
+{{- $name := env "NAME" | default "" -}}
+
+[git]
+    autoCommit = false
+    autoPush = false
+
+[data]
+    email = {{ $email | quote }}
+    name = {{ $name | quote }}

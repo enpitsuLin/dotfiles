@@ -47,7 +47,8 @@ if [ -n "$ANDROID_HOME" ] && [ -d "$ANDROID_HOME" ]; then
   path_append "$ANDROID_HOME/emulator"
 fi
 
-[ -d "/mnt/c/Users/enpitsulin/AppData/Local/Programs/cursor/resources/app/bin" ] && \
-  path_prepend "/mnt/c/Users/enpitsulin/AppData/Local/Programs/cursor/resources/app/bin"
+# WSL: add Windows Cursor to PATH if present
+[ -d "/mnt/c/Users/$(whoami)/AppData/Local/Programs/cursor/resources/app/bin" ] && \
+  path_prepend "/mnt/c/Users/$(whoami)/AppData/Local/Programs/cursor/resources/app/bin"
 
 unset -f path_prepend path_append

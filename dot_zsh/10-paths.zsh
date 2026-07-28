@@ -38,7 +38,12 @@ case "$(uname)" in
     ;;
 esac
 
-path_prepend "$PNPM_HOME"
+# pnpm
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# pnpm end
 
 if [ -n "$ANDROID_HOME" ] && [ -d "$ANDROID_HOME" ]; then
   path_append "$ANDROID_HOME/platform-tools"

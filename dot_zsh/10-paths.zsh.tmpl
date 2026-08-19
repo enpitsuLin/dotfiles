@@ -19,31 +19,25 @@ path_append() {
 path_prepend "$HOME/.local/bin"
 path_prepend "$HOME/.cargo/bin"
 
-case "$(uname)" in
-  Darwin)
-    export PNPM_HOME="$HOME/Library/pnpm"
+{{ if eq .chezmoi.os "darwin" }}
+# macOS: pnpm global dir and Android SDK live under ~/Library
+export PNPM_HOME="$HOME/Library/pnpm"
+export ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
+{{ else }}
+# Linux: XDG-ish locations
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export ANDROID_HOME="${ANDROID_HOME:-$HOME/Android/Sdk}"
+{{ end }}
 
-    if [ -z "$ANDROID_HOME" ]; then
-      export ANDROID_HOME="$HOME/Library/Android/sdk"
-    fi
-
-    export LDFLAGS="-L/opt/homebrew/opt/boost@1.76/lib -L/opt/homebrew/opt/zlib/lib -L/opt/homebrew/opt/bzip2/lib${LDFLAGS:+ $LDFLAGS}"
-    export CPPFLAGS="-I/opt/homebrew/opt/boost@1.76/include -I/opt/homebrew/opt/zlib/include -I/opt/homebrew/opt/bzip2/include${CPPFLAGS:+ $CPPFLAGS}"
-
-    [ -d "/opt/homebrew/opt/bzip2/bin" ] && path_prepend "/opt/homebrew/opt/bzip2/bin"
-    [ -d "/opt/homebrew/opt/python@3.13/libexec/bin" ] && path_prepend "/opt/homebrew/opt/python@3.13/libexec/bin"
-    ;;
-  *)
-    export PNPM_HOME="$HOME/.local/share/pnpm"
-    ;;
+# pnpm 10+ links global bins into $PNPM_HOME itself; legacy links live in $PNPM_HOME/bin
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-
-# pnpm
 case ":$PATH:" in
   *":$PNPM_HOME/bin:"*) ;;
   *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
-# pnpm end
 
 if [ -n "$ANDROID_HOME" ] && [ -d "$ANDROID_HOME" ]; then
   path_append "$ANDROID_HOME/platform-tools"

@@ -5,7 +5,6 @@ export LC_ALL=en_US.UTF-8
 # Node ecosystem binary mirrors
 # https://github.com/cnpm/binary-mirror-config/blob/master/package.json#L53
 export NODEJS_ORG_MIRROR="https://cdn.npmmirror.com/binaries/node"
-export NVM_NODEJS_ORG_MIRROR="https://cdn.npmmirror.com/binaries/node"
 export PHANTOMJS_CDNURL="https://cdn.npmmirror.com/binaries/phantomjs"
 export CHROMEDRIVER_CDNURL="https://cdn.npmmirror.com/binaries/chromedriver"
 export OPERADRIVER_CDNURL="https://cdn.npmmirror.com/binaries/operadriver"

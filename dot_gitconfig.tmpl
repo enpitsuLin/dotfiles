@@ -1,0 +1,26 @@
+[user]
+{{ if eq .chezmoi.os "darwin" }}
+	signingkey = 0672CB8176D09B46A823B81C85C836DC516B372C
+{{ end }}
+	name = {{ .name }}
+	email = {{ .email }}
+{{ if eq .chezmoi.os "darwin" }}
+[commit]
+	gpgsign = true
+{{ end }}
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+{{ if eq .chezmoi.os "darwin" }}
+# MacGPG2 (standalone installer, lives under /usr/local regardless of Homebrew prefix)
+[gpg]
+	program = /usr/local/MacGPG2/bin/gpg
+{{ end }}
+[init]
+	defaultBranch = master
+[pull]
+	rebase = true
+[core]
+	excludesFile = {{ .chezmoi.homeDir }}/.gitignore_global

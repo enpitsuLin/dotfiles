@@ -11,7 +11,8 @@ python.uv_venv_auto = "source"
 [tools]
 bun = "latest"
 go = "1.25.7"
-node = "latest"
+# Track the latest LTS line (currently 24.x); `latest` would follow odd/non-LTS releases
+node = "lts"
 "npm:corepack" = "0.34.6"
 python = "latest"
 uv = "latest"

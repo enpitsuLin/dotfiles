@@ -1,5 +1,6 @@
 {{- $email := env "EMAIL" | default "enpitsulin@gmail.com" -}}
 {{- $name := env "NAME" | default "enpitsulin" -}}
+{{- $editor := env "EDITOR" | default "code" -}}
 
 [git]
     autoCommit = false
@@ -8,3 +9,4 @@
 [data]
     email = {{ $email | quote }}
     name = {{ $name | quote }}
+    editor = {{ $editor | quote }}

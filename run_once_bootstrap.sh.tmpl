@@ -1,0 +1,89 @@
+#!/bin/bash
+# One-time bootstrap: install platform prerequisites not covered by chezmoi/mise.
+# Runs automatically on the first `chezmoi apply` on a fresh machine.
+# (mise install for runtimes runs via run_onchange_after_mise-install.sh)
+# Idempotent: every install step is guarded by a command check.
+set -euo pipefail
+
+log() { printf '\033[1;34m[bootstrap]\033[0m %s\n' "$*"; }
+
+{{ if eq .chezmoi.os "darwin" }}
+# --- macOS ---
+
+# 1. Xcode Command Line Tools (needed by git, compilers, brew)
+if ! xcode-select -p >/dev/null 2>&1; then
+  log "Installing Xcode Command Line Tools..."
+  xcode-select --install
+fi
+
+# 2. Homebrew
+if ! command -v brew >/dev/null 2>&1; then
+  log "Installing Homebrew..."
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+# 3. mise (installs to ~/.local/bin)
+if ! command -v mise >/dev/null 2>&1; then
+  log "Installing mise..."
+  curl https://mise.jdx.dev/install.sh | sh
+fi
+
+# 4. starship
+if ! command -v starship >/dev/null 2>&1; then
+  log "Installing starship..."
+  curl -sS https://starship.rs/install.sh | sh -s -- -y
+fi
+
+# 5. Platform-native JDK (zulu casks install into /Library/Java/JavaVirtualMachines).
+#    Install extra versions as needed: brew install --cask zulu8 zulu11 zulu21
+if ! /usr/libexec/java_home -v 17 >/dev/null 2>&1; then
+  log "Installing JDK 17 (Zulu)..."
+  brew install --cask zulu17
+fi
+
+log "Done. Reopen your shell (zsh is already your default)."
+{{ else }}
+# --- Linux ---
+
+install_pkg() {
+  if command -v apt-get >/dev/null 2>&1; then
+    sudo apt-get update
+    sudo apt-get install -y "$@"
+  elif command -v dnf >/dev/null 2>&1; then
+    sudo dnf install -y "$@"
+  else
+    log "WARN: no apt-get/dnf found; install these manually: $*"
+  fi
+}
+
+# 1. System dependencies (git/zsh/compilers)
+install_pkg curl git zsh build-essential unzip ca-certificates gnupg
+
+# 2. mise
+if ! command -v mise >/dev/null 2>&1; then
+  log "Installing mise..."
+  curl https://mise.jdx.dev/install.sh | sh
+fi
+
+# 3. starship
+if ! command -v starship >/dev/null 2>&1; then
+  log "Installing starship..."
+  curl -sS https://starship.rs/install.sh | sh -s -- -y
+fi
+
+# 4. Platform-native JDK (default via update-alternatives).
+#    Extra versions: apt install openjdk-8/11/21-jdk, then update-alternatives --config java
+if command -v apt-get >/dev/null 2>&1; then
+  install_pkg openjdk-17-jdk
+elif command -v dnf >/dev/null 2>&1; then
+  install_pkg java-17-openjdk-devel
+fi
+
+# 5. zsh as the default login shell
+if [ "$SHELL" != "$(command -v zsh)" ]; then
+  log "Set zsh as your default shell: chsh -s $(command -v zsh)"
+fi
+
+log "Done. Reopen your shell."
+{{ end }}

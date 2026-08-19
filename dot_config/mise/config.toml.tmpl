@@ -16,3 +16,8 @@ node = "lts"
 "npm:corepack" = "0.34.6"
 python = "latest"
 uv = "latest"
+{{ if eq .chezmoi.os "darwin" }}
+# macOS only: daily Ruby (CocoaPods for iOS keeps using the brew-managed ruby;
+# it is a hard dependency of the brew cocoapods formula and stays untouched).
+ruby = "3.4.10"
+{{ end }}

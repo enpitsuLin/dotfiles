@@ -1,0 +1,5 @@
+{{- if eq .chezmoi.os "darwin" }}
+export PATH="$PATH:$HOME/.foundry/bin"
+{{- else }}
+# ~/.zshenv — Linux: nothing to add here; paths are managed in ~/.zsh/10-paths.zsh.
+{{- end }}

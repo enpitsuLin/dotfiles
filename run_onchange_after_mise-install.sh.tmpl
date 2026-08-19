@@ -1,5 +1,6 @@
 #!/bin/bash
-# Run mise install when this script or mise config changes
+# Run mise install when this script or the mise config changes.
+# mise config hash: {{ include "dot_config/mise/config.toml.tmpl" | sha256sum }}
 if command -v mise >/dev/null 2>&1; then
   mise install
 elif [ -x "$HOME/.local/bin/mise" ]; then

@@ -46,19 +46,55 @@ log "Done. Reopen your shell (zsh is already your default)."
 {{ else }}
 # --- Linux ---
 
+# Install only missing packages. If sudo requires a password (e.g. non-interactive
+# shells), warn and print the manual command instead of failing the bootstrap.
 install_pkg() {
+  local pkg_mgr="" missing=() pkg
   if command -v apt-get >/dev/null 2>&1; then
-    sudo apt-get update
-    sudo apt-get install -y "$@"
+    pkg_mgr="apt"
+    for pkg in "$@"; do
+      dpkg -s "$pkg" >/dev/null 2>&1 || missing+=("$pkg")
+    done
   elif command -v dnf >/dev/null 2>&1; then
-    sudo dnf install -y "$@"
+    pkg_mgr="dnf"
+    for pkg in "$@"; do
+      rpm -q "$pkg" >/dev/null 2>&1 || missing+=("$pkg")
+    done
   else
     log "WARN: no apt-get/dnf found; install these manually: $*"
+    return 0
+  fi
+
+  if [ "${#missing[@]}" -eq 0 ]; then
+    return 0
+  fi
+
+  if ! sudo -n true 2>/dev/null; then
+    if [ "$pkg_mgr" = "apt" ]; then
+      log "WARN: sudo requires a password. Install manually:"
+      log "      sudo apt-get install -y ${missing[*]}"
+    else
+      log "WARN: sudo requires a password. Install manually:"
+      log "      sudo dnf install -y ${missing[*]}"
+    fi
+    return 0
+  fi
+
+  if [ "$pkg_mgr" = "apt" ]; then
+    sudo apt-get update
+    sudo apt-get install -y "${missing[@]}"
+  else
+    sudo dnf install -y "${missing[@]}"
   fi
 }
 
-# 1. System dependencies (git/zsh/compilers)
-install_pkg curl git zsh build-essential unzip ca-certificates gnupg
+# 1. System dependencies (git/zsh/compilers).
+#    Debian/Ubuntu: build-essential. Fedora/RHEL: gcc/gcc-c++/make.
+if command -v apt-get >/dev/null 2>&1; then
+  install_pkg curl git zsh build-essential unzip ca-certificates gnupg
+elif command -v dnf >/dev/null 2>&1; then
+  install_pkg curl git zsh gcc gcc-c++ make unzip ca-certificates gnupg
+fi
 
 # 2. mise
 if ! command -v mise >/dev/null 2>&1; then
@@ -74,10 +110,12 @@ fi
 
 # 4. Platform-native JDK (default via update-alternatives).
 #    Extra versions: apt install openjdk-8/11/21-jdk, then update-alternatives --config java
-if command -v apt-get >/dev/null 2>&1; then
-  install_pkg openjdk-17-jdk
-elif command -v dnf >/dev/null 2>&1; then
-  install_pkg java-17-openjdk-devel
+if ! command -v java >/dev/null 2>&1; then
+  if command -v apt-get >/dev/null 2>&1; then
+    install_pkg openjdk-17-jdk
+  elif command -v dnf >/dev/null 2>&1; then
+    install_pkg java-17-openjdk-devel
+  fi
 fi
 
 # 5. zsh as the default login shell

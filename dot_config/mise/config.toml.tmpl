@@ -11,13 +11,13 @@ python.uv_venv_auto = "source"
 [tools]
 bun = "latest"
 go = "1.25.7"
+java = "zulu-17.68.17.0"
 # Track the latest LTS line (currently 24.x); `latest` would follow odd/non-LTS releases
 node = "lts"
 "npm:corepack" = "0.34.6"
 python = "latest"
 uv = "latest"
 {{ if eq .chezmoi.os "darwin" }}
-# macOS only: daily Ruby (CocoaPods for iOS keeps using the brew-managed ruby;
-# it is a hard dependency of the brew cocoapods formula and stays untouched).
+# macOS only: daily Ruby and CocoaPods use the mise-managed runtime.
 ruby = "3.4.10"
 {{ end }}

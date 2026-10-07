@@ -35,12 +35,7 @@ if ! command -v starship >/dev/null 2>&1; then
   curl -sS https://starship.rs/install.sh | sh -s -- -y
 fi
 
-# 5. Platform-native JDK (zulu casks install into /Library/Java/JavaVirtualMachines).
-#    Install extra versions as needed: brew install --cask zulu8 zulu11 zulu21
-if ! /usr/libexec/java_home -v 17 >/dev/null 2>&1; then
-  log "Installing JDK 17 (Zulu)..."
-  brew install --cask zulu17
-fi
+# Java and other language runtimes are installed by mise after config deployment.
 
 log "Done. Reopen your shell (zsh is already your default)."
 {{ else }}
@@ -108,17 +103,9 @@ if ! command -v starship >/dev/null 2>&1; then
   curl -sS https://starship.rs/install.sh | sh -s -- -y
 fi
 
-# 4. Platform-native JDK (default via update-alternatives).
-#    Extra versions: apt install openjdk-8/11/21-jdk, then update-alternatives --config java
-if ! command -v java >/dev/null 2>&1; then
-  if command -v apt-get >/dev/null 2>&1; then
-    install_pkg openjdk-17-jdk
-  elif command -v dnf >/dev/null 2>&1; then
-    install_pkg java-17-openjdk-devel
-  fi
-fi
+# Java and other language runtimes are installed by mise after config deployment.
 
-# 5. zsh as the default login shell
+# 4. zsh as the default login shell
 if [ "$SHELL" != "$(command -v zsh)" ]; then
   log "Set zsh as your default shell: chsh -s $(command -v zsh)"
 fi

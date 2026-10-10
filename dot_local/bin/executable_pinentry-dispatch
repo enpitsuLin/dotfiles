@@ -1,0 +1,19 @@
+#!/bin/sh
+# gpg-agent invokes this script as the pinentry program (see gpg-agent.conf).
+# It dispatches based on GPG_TTY, which gpg-agent forwards from the client:
+#   - a TTY is present  -> terminal pinentry
+#   - no TTY (GUI app)  -> native dialog via pinentry-mac, if available
+#
+# Homebrew paths are prepended because gpg-agent may run with a minimal PATH.
+PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+
+if [ -n "$GPG_TTY" ] && [ -c "$GPG_TTY" ]; then
+  exec pinentry-curses "$@"
+fi
+
+if command -v pinentry-mac >/dev/null 2>&1; then
+  exec pinentry-mac "$@"
+fi
+
+# Last resort: plain terminal prompt.
+exec pinentry-tty "$@"

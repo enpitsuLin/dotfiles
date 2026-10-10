@@ -1,0 +1,4 @@
+# Dispatch passphrase prompts: terminal clients use the terminal, GUI clients
+# (VSCode, IDEs, GitHub Desktop) get a native dialog.
+# See {{ .chezmoi.homeDir }}/.local/bin/pinentry-dispatch
+pinentry-program {{ .chezmoi.homeDir }}/.local/bin/pinentry-dispatch

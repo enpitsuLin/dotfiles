@@ -47,6 +47,8 @@ chezmoi add ~/.config/some-app/config.toml
 - **Homebrew is macOS-only**; Linux uses its system package manager (`apt`/`dnf`).
 - Platform differences are handled with chezmoi templates (`{{ if eq .chezmoi.os "linux" }}`)
   such as `dot_zsh/10-paths.zsh.tmpl` and `run_once_bootstrap.sh.tmpl`.
+- **git-lfs** is installed by the bootstrap script; `~/.gitconfig` enables the
+  required LFS filters.
 - bash config files (`~/.profile`, `~/.bashrc`) are also chezmoi-managed as a
   compatibility layer for bash-invoking environments; zsh remains the primary shell.
 
@@ -79,10 +81,11 @@ This repo uses `mise` as the global language/runtime manager.
 
 ## GPG / commit signing
 
-On macOS, commits are signed by default (`commit.gpgsign = true` in
+Commits are signed by default on macOS and Linux (`commit.gpgsign = true` in
 `dot_gitconfig.tmpl`) with the key `0672CB8176D09B46A823B81C85C836DC516B372C`.
 
-- `gnupg` and `pinentry-mac` are installed by the bootstrap script.
+- `gnupg` (`gnupg2` on Fedora) and `git-lfs` are installed by the bootstrap
+  script; `pinentry-mac` is additionally installed on macOS.
 - Passphrase prompts go through `~/.local/bin/pinentry-dispatch` (managed as
   `dot_local/bin/executable_pinentry-dispatch`, wired up by
   `private_dot_gnupg/gpg-agent.conf.tmpl`): terminal clients prompt in the

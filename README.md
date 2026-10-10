@@ -77,6 +77,29 @@ This repo uses `mise` as the global language/runtime manager.
 - If you install Python with `uv`, run `mise sync python --uv` to sync interpreters into `mise`.
 - Project-local `mise.toml`, `.tool-versions`, `.nvmrc`, `.python-version`, and `.ruby-version` can still override the global defaults.
 
+## GPG / commit signing
+
+On macOS, commits are signed by default (`commit.gpgsign = true` in
+`dot_gitconfig.tmpl`) with the key `0672CB8176D09B46A823B81C85C836DC516B372C`.
+
+- `gnupg` and `pinentry-mac` are installed by the bootstrap script.
+- Passphrase prompts go through `~/.local/bin/pinentry-dispatch` (managed as
+  `dot_local/bin/executable_pinentry-dispatch`, wired up by
+  `private_dot_gnupg/gpg-agent.conf.tmpl`): terminal clients prompt in the
+  terminal, GUI clients (VSCode, IDEs, GitHub Desktop) show a native dialog.
+- GnuPG re-reads `gpg-agent.conf` on restart; run `gpgconf --kill gpg-agent`
+  after changing it (the agent restarts automatically).
+- The private key is **not** managed by this repo and must be imported once per
+  machine:
+
+```sh
+gpg --import /path/to/private-key.asc
+gpg --list-secret-keys --keyid-format=long   # expect ...516B372C
+```
+
+Until the key is imported, `git commit` fails; bypass signing with
+`git -c commit.gpgsign=false commit`.
+
 ## Windows
 
 Legacy PowerShell configs are archived in `pc/` for reference only and are **not**

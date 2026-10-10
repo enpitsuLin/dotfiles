@@ -35,6 +35,16 @@ if ! command -v starship >/dev/null 2>&1; then
   curl -sS https://starship.rs/install.sh | sh -s -- -y
 fi
 
+# 5. GnuPG + pinentry-mac (git commit signing; see README)
+if ! command -v gpg >/dev/null 2>&1; then
+  log "Installing GnuPG..."
+  brew install gnupg
+fi
+if ! command -v pinentry-mac >/dev/null 2>&1; then
+  log "Installing pinentry-mac..."
+  brew install pinentry-mac
+fi
+
 # Java and other language runtimes are installed by mise after config deployment.
 
 log "Done. Reopen your shell (zsh is already your default)."

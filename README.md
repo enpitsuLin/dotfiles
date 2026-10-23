@@ -53,4 +53,10 @@ Git 默认启用 GPG 签名。私钥需在每台机器上自行导入：
 gpg --import /path/to/private-key.asc
 ```
 
-使用其他密钥时，修改 `home/.gitconfig.tera` 中的 `signingkey` 并运行 `mise dot apply`。临时跳过签名可使用 `git -c commit.gpgsign=false commit`。
+其他密钥设置和密码提示配置见 [GPG 与提交签名](docs/gpg.md)。
+
+## 详细说明
+
+- [配置与平台](docs/configuration.md)：文件管理、自定义与平台路径。
+- [工具与语言运行时](docs/runtimes.md)：版本管理、Python/uv 和 Java。
+- [GPG 与提交签名](docs/gpg.md)：私钥、密码提示与故障排查。

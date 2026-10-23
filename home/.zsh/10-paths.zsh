@@ -17,7 +17,8 @@ path_append() {
 }
 
 path_prepend "$HOME/.local/bin"
-path_prepend "$HOME/.cargo/bin"
+# Keep Cargo-installed commands behind mise-managed tools, including in nested shells.
+path=("${(@)path:#$HOME/.cargo/bin}" "$HOME/.cargo/bin")
 
 if [[ "$OSTYPE" == darwin* ]]; then
   # macOS: pnpm global dir and Android SDK live under ~/Library.

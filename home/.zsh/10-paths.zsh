@@ -19,15 +19,14 @@ path_append() {
 path_prepend "$HOME/.local/bin"
 path_prepend "$HOME/.cargo/bin"
 
-{{ if eq .chezmoi.os "darwin" }}
-# macOS: pnpm global dir and Android SDK live under ~/Library
-export PNPM_HOME="$HOME/Library/pnpm"
-export ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
-{{ else }}
-# Linux: XDG-ish locations
-export PNPM_HOME="$HOME/.local/share/pnpm"
-export ANDROID_HOME="${ANDROID_HOME:-$HOME/Android/Sdk}"
-{{ end }}
+if [[ "$OSTYPE" == darwin* ]]; then
+  # macOS: pnpm global dir and Android SDK live under ~/Library.
+  export PNPM_HOME="$HOME/Library/pnpm"
+  export ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
+else
+  export PNPM_HOME="$HOME/.local/share/pnpm"
+  export ANDROID_HOME="${ANDROID_HOME:-$HOME/Android/Sdk}"
+fi
 
 # pnpm 10+ links global bins into $PNPM_HOME itself; legacy links live in $PNPM_HOME/bin
 case ":$PATH:" in

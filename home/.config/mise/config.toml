@@ -5,8 +5,6 @@ idiomatic_version_file_enable_tools = ["node", "python", "ruby"]
 pin = true
 python.uv_venv_auto = "source"
 
-[settings.node]
-
 # Global defaults. Project-level mise files can still override these.
 [tools]
 bun = "latest"
@@ -17,7 +15,6 @@ node = "lts"
 "npm:corepack" = "0.34.6"
 python = "latest"
 uv = "latest"
-{{ if eq .chezmoi.os "darwin" }}
+starship = "latest"
 # macOS only: daily Ruby and CocoaPods use the mise-managed runtime.
-ruby = "3.4.10"
-{{ end }}
+ruby = { version = "3.4.10", os = ["macos"] }

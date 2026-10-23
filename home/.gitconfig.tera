@@ -1,7 +1,7 @@
 [user]
 	signingkey = 0672CB8176D09B46A823B81C85C836DC516B372C
-	name = {{ .name }}
-	email = {{ .email }}
+	name = {{ vars.git_name | json_encode() }}
+	email = {{ vars.git_email | json_encode() }}
 
 [commit]
 	gpgsign = true
@@ -20,4 +20,4 @@
 [pull]
 	rebase = true
 [core]
-	excludesFile = {{ .chezmoi.homeDir }}/.gitignore_global
+	excludesFile = "~/.gitignore_global"

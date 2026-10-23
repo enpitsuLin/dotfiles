@@ -1,0 +1,48 @@
+min_version = "2026.10.9"
+
+[vars]
+git_name = "{{ env.NAME | default(value='enpitsulin') }}"
+git_email = "{{ env.EMAIL | default(value='enpitsulin@gmail.com') }}"
+
+[bootstrap.packages]
+"brew:gnupg" = { os = "macos" }
+"brew:pinentry-mac" = { os = "macos" }
+"brew:git-lfs" = { os = "macos" }
+"apt:curl" = "latest"
+"apt:git" = "latest"
+"apt:zsh" = "latest"
+"apt:build-essential" = "latest"
+"apt:unzip" = "latest"
+"apt:ca-certificates" = "latest"
+"apt:gnupg" = "latest"
+"apt:pinentry-curses" = "latest"
+"apt:git-lfs" = "latest"
+"dnf:curl" = "latest"
+"dnf:git" = "latest"
+"dnf:zsh" = "latest"
+"dnf:gcc" = "latest"
+"dnf:gcc-c++" = "latest"
+"dnf:make" = "latest"
+"dnf:unzip" = "latest"
+"dnf:ca-certificates" = "latest"
+"dnf:gnupg2" = "latest"
+"dnf:pinentry" = "latest"
+"dnf:git-lfs" = "latest"
+
+[dotfiles]
+"~/.config/mise/config.toml" = { source = "home/.config/mise/config.toml", mode = "symlink" }
+"~/.bash_profile" = { source = "home/.bash_profile", mode = "symlink" }
+"~/.bashrc" = { source = "home/.bashrc", mode = "symlink" }
+"~/.profile" = { source = "home/.profile", mode = "symlink" }
+"~/.gitconfig" = { source = "home/.gitconfig.tera", mode = "template" }
+"~/.gitignore_global" = { source = "home/.gitignore_global", mode = "symlink" }
+"~/.gnupg" = { permissions = "0700" }
+"~/.gnupg/gpg-agent.conf" = { source = "home/.gnupg/gpg-agent.conf.tera", mode = "template", permissions = "0600" }
+"~/.local/bin/pinentry-dispatch" = { source = "home/.local/bin/pinentry-dispatch", mode = "copy", permissions = "0755" }
+"~/.starship/starship.toml" = { source = "home/.starship/starship.toml", mode = "symlink" }
+"~/.zprofile" = { source = "home/.zprofile", mode = "symlink" }
+"~/.zshenv" = { source = "home/.zshenv", mode = "symlink" }
+"~/.zshrc" = { source = "home/.zshrc", mode = "symlink" }
+"~/.zsh" = { source = "home/.zsh", mode = "symlink-each" }
+"~/.zsh/60-java.zsh" = { mode = "absent" }
+"~/.zsh/90-mise.zsh" = { mode = "absent" }
